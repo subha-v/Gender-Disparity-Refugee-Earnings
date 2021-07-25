@@ -1,5 +1,5 @@
 ###########################
-# Polygence Project #
+# The Gender Disparity of Refugee Earnings in the U.S. #
 # Date: 7/24/21         #
 # Subha Vadlamannati        #
 ###########################
