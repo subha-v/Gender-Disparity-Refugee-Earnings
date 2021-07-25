@@ -1,7 +1,7 @@
 ###########################
 # Polygence Project #
 # Date: 7/24/21         #
-# Subha        #
+# Subha Vadlamannati        #
 ###########################
 
 install.packages('ggplot2')
@@ -15,6 +15,7 @@ install.packages("kableExtra")
 install.packages('tidyverse')
 install.packages('lmtest')
 install.packages('mosaic')
+install.packages("devtools")
 library(mosaic)
 library(lmtest)
 library("kableExtra")
@@ -27,8 +28,6 @@ library('lattice')
 library(ggiraphExtra)
 library(tidyverse)
 
-install.packages("devtools")
-devtools::install_github("cardiomoon/ggiraphExtra")
 
 ##########################
 #    Loading Data          #
@@ -88,7 +87,7 @@ asr_2018$age <- as.numeric(gsub("don't know", "", asr_2018$age))
 asr_2018$age <- as.numeric(gsub("less than 1 year", "", asr_2018$age))
 asr_2018$age <- as.numeric(gsub("75 or older", "", asr_2018$age))
 
-#removing any 0 values from the GI index since they are not given! MEWMEWMEWMEWMEW
+#removing any 0 values from the GI index since they are not given
 asr_2018$GI <- as.numeric(gsub("0", "", asr_2018$GI))
 
 #removing any bad values in the resettled region
@@ -103,32 +102,10 @@ asr_2018$number[asr_2018$qn8b=="weekly"]<-52
 asr_2018$number[asr_2018$qn8b=="monthly"]<-12
 asr_2018$number[asr_2018$qn8b=="annually"]<-1
 
-
 # dummy variable for gender
 # 0 is female and 1 is male
 asr_2018$gender_dummy <- ifelse(asr_2018$gender == 'male',1,0)   
 
-asr_2018$somali <- ifelse(asr_2018$countryOfBirth == 'somalia',1,0)
-
-#creating GI index variable
-asr_2018$GI <- ifelse(asr_2018$countryOfBirth %in% c("united states", "thailand", "el salvador"), 1, 0)
-asr_2018$GI <- (asr_2018$countryOfBirth %in% c("burma", "nepal", "iran", "bhutan") 2)
-#
-#' asr_2018$GII[asr_2018$countryOfBirth=="united states"]<-0.204*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="cuba"]<-0.304*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="thailand"]<-0.359*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="el salvador"]<-0.383*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="bhutan"]<-0.421*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="nepal"]<-0.452*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="iran"]<-0.459*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="burma"]<-0.478*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="syria"]<-0.482*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.57*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="iraq"]<-0.577*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="afghanistan"]<-0.655*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="somalia"]<-0.776*10
-#' asr_2018$GII[asr_2018$countryOfBirth=="eritrea"]<-0.517*10
-#' 
 
 #ECONP
 asr_2018$econp[asr_2018$countryOfBirth=="cuba"]<-0.627*10
@@ -175,7 +152,6 @@ asr_2018$ggp[asr_2018$countryOfBirth=="eritrea"]<-0.656*10 #this is ethiopia
 
 #somalia not considered in ^
 
-
 #GDP per capita
 asr_2018$gdpc[asr_2018$countryOfBirth=="thailand"]<-7295
 asr_2018$gdpc[asr_2018$countryOfBirth=="el salvador"]<-4068
@@ -188,37 +164,6 @@ asr_2018$gdpc[asr_2018$countryOfBirth=="democratic republic of the congo"]<-2224
 asr_2018$gdpc[asr_2018$countryOfBirth=="iraq"]<-5834
 asr_2018$gdpc[asr_2018$countryOfBirth=="eritrea"]<-332
 asr_2018$gdpc[asr_2018$countryOfBirth == "somalia"]<-332
-
-
-#GI by category
-asr_2018$GI[asr_2018$countryOfBirth =='burma']<-2
-asr_2018$GI[asr_2018$countryOfBirth =='nepal']<-2
-asr_2018$GI[asr_2018$countryOfBirth =='iran']<-2
-asr_2018$GI[asr_2018$countryOfBirth =='bhutan']<-2
-
-asr_2018$GI[asr_2018$countryOfBirth =='democratic republic of the congo']<-3
-asr_2018$GI[asr_2018$countryOfBirth =='iraq']<-3
-asr_2018$GI[asr_2018$countryOfBirth =='eritrea']<-3
-asr_2018$GI[asr_2018$countryOfBirth =='afghanistan']<-3
-asr_2018$GI[asr_2018$countryOfBirth =='somalia']<-3
-asr_2018$GI[asr_2018$countryOfBirth =='syria']<-3
-
-asr_2018$englishSkill_dummy <- ifelse(asr_2018$howWellDoTheySpeakNow == 'not at all',0,1)
-asr_2018$englishSkill_dummy[asr_2018$howWellDoTheySpeakNow =='well']<-2
-asr_2018$englishSkill_dummy[asr_2018$howWellDoTheySpeakNow =='very well']<-3
-
-asr_2018$GII[asr_2018$countryOfBirth=="cuba"]<-0.312*10
-asr_2018$GII[asr_2018$countryOfBirth=="thailand"]<-0.377*10
-asr_2018$GII[asr_2018$countryOfBirth=="el salvador"]<-0.397*10
-asr_2018$GII[asr_2018$countryOfBirth=="bhutan"]<-0.436*10
-asr_2018$GII[asr_2018$countryOfBirth=="nepal"]<-0.476*10
-asr_2018$GII[asr_2018$countryOfBirth=="iran"]<-0.492*10
-asr_2018$GII[asr_2018$countryOfBirth=="burma"]<-0.458*10
-asr_2018$GII[asr_2018$countryOfBirth=="syria"]<-0.547*10
-asr_2018$GII[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.579*10
-asr_2018$GII[asr_2018$countryOfBirth=="iraq"]<-0.540*10
-asr_2018$GII[asr_2018$countryOfBirth=="somalia"]<-0.560*10 #sudan
-asr_2018$GII[asr_2018$countryOfBirth=="eritrea"]<-0.508*10 #ethiopia
 
 
 #########################
@@ -250,10 +195,6 @@ asr_2018_syria_male <- asr_2018_syria[asr_2018_syria$gender=="male",]
 
 #creating iraq spreadsheet
 asr_2018_iraq <- asr_2018[asr_2018$countryOfBirth=="iraq",]
-#creating iraq spreadsheet for females
-asr_2018_iraq_female <- asr_2018_iraq[asr_2018_iraq$gender=="female",]
-#creating iraq spreadsheet for males
-asr_2018_iraq_male <- asr_2018_iraq[asr_2018_iraq$gender=="male",]
 
 #creating eritrea spreadsheet
 asr_2018_eritrea <- asr_2018[asr_2018$countryOfBirth=="eritrea",]
@@ -313,25 +254,10 @@ asr_2018_afghan <-asr_2018[asr_2018$countryOfBirth=="afghanistan",]
 plot(asr_2018$GII[asr_2018$gender=="female"], asr_2018$dollarsPerHourAtJob[asr_2018$gender=="female"], col="blue",)
 points(asr_2018$GII[asr_2018$gender=="male"], asr_2018$dollarsPerHourAtJob[asr_2018$gender=="male"], col="red",)
 
-reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GII+asr_2018$gender+asr_2018$GII*asr_2018$gender)
-summary(reg0)
-coef(reg0)
-
 ggplot(asr_2018_female,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS))+geom_point()+geom_smooth(method="lm")+ labs(title="Female Years of Schooling \n vs Dollars Per Hour at Job", x="Years of Schooling Before Entering US", y="Dollars Per Hour at Job")+ coord_cartesian(ylim=c(0, 60))
 ggplot(asr_2018_male,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS))+geom_point()+geom_smooth(method="lm")+ labs(title="Male Years of Schooling \n vs Dollars Per Hour at Job", x="Years of Schooling Before Entering US", y="Dollars Per Hour at Job")+ coord_cartesian(ylim=c(0, 60))
 
-abline(a=15.46, b=-0.09, col="red",lwd=3)
-abline(a=15.56, b=-0.710, col="blue", lwd=3)
 
-y1 <- 9.147 + 7.19*x
-y2 <-
-  plot.new+
-  plot(a=9.147, b=7.19, col="red",lwd=3, xlim=c(0,1))
-plot(a=10.5, b=2.16, col="blue", lwd=3, xlim=c(0,1))
-
-
- puts the years of schooling vs dollars per hour at job for male and female and graphs them on separate graphs
-  par(mfrow=c(1,2))
 boys<-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_male, pch=19, ylab="Dollars Per Hour At Job", 
            xlab="Years Of Schooling Before Entering The US", main="Male", las=1, ylim=c(0,100))
 abline(boys)
@@ -355,174 +281,14 @@ plot(qn18b ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_female, pch=19, ylab
      xlab="Years Of Schooling Before Entering The US", main="Female", las=1,ylim=c(0,90))
 summary(model5)
 
-#graphs the relation between years of schooling and amount earned per past year
-par(mfrow=c(1,2))
-plot(qn18c ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_male, pch=19, ylab="Income In Past Year", 
-     xlab="Years Of Schooling Before Entering The US", main="Male", las=1)
-
-plot(qn18c ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_female, pch=19, ylab="Income In Past Year", 
-     xlab="Years Of Schooling Before Entering The US", main="Female", las=1)
-
-
-# this puts the years of schooling vs dollars per hour at job for eritrean male and female and graphs them on separate graphs
-par(mfrow=c(1,2))
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_eritrea_male, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Eritrean Male", las=1)
-
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_eritrea_female, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Eritrean Female", las=1, ylim=c(0,20))
-
-
-# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
-par(mfrow=c(1,2))
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_iraq_male, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Iraqi Male", las=1,ylim=c(0,65))
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_iraq_female, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Iraqi Female", las=1, ylim=c(0,65))
-
-
-# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
-par(mfrow=c(1,2))
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_syria_male, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Syrian Male", las=1)
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_syria_female, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Syrian Female", las=1, ylim=c(0,35))
-
-
-# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
-par(mfrow=c(1,2))
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_thailand_male, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Syrian Male", las=1)
-plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_thailand_female, pch=19, ylab="Dollars Per Hour At Job", 
-     xlab="Years Of Schooling Before Entering The US", main="Syrian Female", las=1)
-
 #prints dollars per hour vs years of schooling before US with the regression line
 ggplot(asr_2018_female,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(howWellDoTheySpeakNow)))+geom_point()+stat_smooth(method="lm",se=FALSE)+ coord_cartesian(ylim=c(0, 60))
 ggplot(asr_2018_male,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(howWellDoTheySpeakNow)))+geom_point()+stat_smooth(method="lm",se=FALSE)+ coord_cartesian(ylim=c(0, 60))
 
-ggplot(asr_2018, aes(y=dollarsPerHourAtJob, x=howManyYearsOfSchoolingBeforeUS, color=factor(gender)))+geom_point()+stat_smooth(method="lm", se=FALSE)+ coord_cartesian(ylim=c(0, 60))
-#prints graphs for each GI index
-ggplot(GI_1,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
-ggplot(GI_2,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
-ggplot(GI_3,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
-
-
 
 #########################
-#       Regressions and Summaries        #
+#       Main Regression Table        #
 #########################
-reg<-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$age + asr_2018$highestDegreeBeforeUS + asr_2018$howWellDoTheySpeakNow+ asr_2018$countryOfCitizenship+asr_2018$workBeforeUS)
-summary(reg)
-summary(reg)$coefficient
-confint(reg, conf.level=0.95)
-plot(reg)
-
-#hdi
-regh <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$hdi)
-summary(regh)
-
-reghnew <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GII + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(reghnew)
-
-
-#####
-#Regressions using the different mechanisms (HDI, GII, etc.)
-######
-
-#HDI
-
-regh1 <-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$hdi + asr_2018$gender + asr_2018$hdi)
-summary(regh1)
-
-regh2 <-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$hdi + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(regh2)
-
-stargazer(regh1, out='latex')
-stargazer(regh2, out = 'latex')
-
-regh3 <- lm(asr_2018$dollarsPerHourAtJob ~asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(regh3)
-
-stargazer(regh3, out='latex')
-
-#idk add an appendix for numppl or something
-#GGP
-
-yuh0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$ggp + asr_2018$gender + asr_2018$ggp)
-summary(yuh0)
-
-yuh1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$ggp + asr_2018$gender + asr_2018$ggp + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(yuh1)
-
-stargazer(yuh0, yuh1, out='latex')
-
-regg <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$ggp)
-summary(regg)
-
-
-#Using all of the mechanisms together.
-
-billiejean <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$hdi + asr_2018$ggp + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(billiejean)
-
-billiejean2 <- lm (asr_2018$hdi ~ asr_2018$ggp)
-summary(billiejean2)
-
-billiewhat <- lm(asr_2018$hdi ~ asr_2018$GII)
-summary(billiewhat)
-
-billiejean3 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$hdi*asr_2018$gender + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$ggp)
-summary(billiejean3)
-
-wer <- lm(asr_2018$ggp ~ asr_2018$hdi)
-summary(wer)
-
-#GDP per capita!
-
-hai <- lm(asr_2018$gdpc ~asr_2018$ggp)
-summary(hai)
-
-######
-
-yuh2 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$hdi + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(yuh2)
-
-
-stargazer(regh, regh2, type = 'latex', out = 'hi')
-
-rego <- lm(asr_2018$annualIncome~asr_2018$gender)
-summary(rego)
-
-
-#trying to use econp
-reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$econp + asr_2018$gender)
-summary(reg0)
-
-#numppl
-reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$numppl*asr_2018$gender + asr_2018$gender + asr_2018$numppl)
-summary(reg0)
-
-#trying to use gii
-reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GII+asr_2018$gender+asr_2018$econp)
-summary(reg0)
-coef(reg0)
-stargazer(reg0, type = 'latex', out='hi')
-
-somalireg <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$somali + asr_2018$somali + asr_2018$gender)
-summary(somalireg)
-
-somalireg2 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$somali + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(somalireg2)
-
-somalireg3 <- lm(asr_2018_somalia$dollarsPerHourAtJob ~ asr_2018_somalia$gender+ asr_2018_somalia$howManyYearsOfSchoolingBeforeUS)
-summary(somalireg3)
-
-somalireg4 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$somali + asr_2018$somali + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(somalireg4)
-
-reg1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$GII + asr_2018$gender + asr_2018$GII + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(reg1)
-
 #gender
 reg1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender)
 summary(reg1)
@@ -548,30 +314,83 @@ summary(reg6)
 mew <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$howWellDoTheySpeakNow)
 summary(mew)
 
-pbhat <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$highestDegreeBeforeUS)
-summary(pbhat)
-stargazer(pbhat, type = 'latex', out='hi')
-
 stargazer(reg1, reg2, reg3, reg4, reg5, type = 'latex', out = 'my_reg_table.html')
 
-bptest(reg5)
+reg<-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$age + asr_2018$highestDegreeBeforeUS + asr_2018$howWellDoTheySpeakNow+ asr_2018$countryOfCitizenship+asr_2018$workBeforeUS)
+summary(reg)
+summary(reg)$coefficient
+confint(reg, conf.level=0.95)
+plot(reg)
 
-#making same regression w interaction variable
-reg7 <- lm(asr_2018$dollarsPerHourAtJob~asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$howManyYearsOfSchoolingBeforeUS +asr_2018$gender)
-summary(reg7)
+###########################
+#     Regressions using the different mechanisms (HDI, GII, etc.)     #
+###########################
 
-reg16 <- lm(asr_2018_female$dollarsPerHourAtJob ~ asr_2018_female$howManyYearsOfSchoolingBeforeUS + asr_2018_female$countryOfBirth)
-summary(reg16)
+#HDI
 
-#gendered schooling
-reg11 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GI + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
-summary(reg11)
-stargazer(reg11, type = 'latex', out = 'my_reg_table.html')
+regh <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$hdi)
+summary(regh)
 
-#linear correlation between dollars per hour at job vs years of school for female
-cor(asr_2018_female$dollarsPerHourAtJob,asr_2018_female$howManyYearsOfSchoolingBeforeUS, method="pearson", use = "complete.obs")
-#linear correlation between dollars per hour at job vs years of school for males
-cor(asr_2018_male$dollarsPerHourAtJob, asr_2018_male$howManyYearsOfSchoolingBeforeUS, method="pearson", use = "complete.obs")
+regh1 <-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$hdi + asr_2018$gender + asr_2018$hdi)
+summary(regh1)
+
+regh2 <-lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$hdi + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(regh2)
+
+regh3 <- lm(asr_2018$dollarsPerHourAtJob ~asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(regh3)
+
+
+stargazer(regh1, out='latex')
+stargazer(regh2, out = 'latex')
+stargazer(regh3, out='latex')
+
+#GGP
+
+regg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$ggp + asr_2018$gender + asr_2018$ggp)
+summary(regg0)
+
+regg1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$ggp + asr_2018$gender + asr_2018$ggp + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(regg1)
+
+regg2 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$ggp)
+summary(regg2)
+
+stargazer(regg0, regg1, out='latex')
+
+
+#Both GGP and HDI
+
+both0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$hdi + asr_2018$ggp + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(both0)
+
+both1 <- lm (asr_2018$hdi ~ asr_2018$ggp)
+summary(both1)
+
+both2 <- lm(asr_2018$hdi ~ asr_2018$GII)
+summary(both2)
+
+both3 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$hdi*asr_2018$gender + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$ggp)
+summary(both3)
+
+both4 <- lm(asr_2018$ggp ~ asr_2018$hdi)
+summary(both4)
+
+#GDP per capita
+
+regdp <- lm(asr_2018$gdpc ~asr_2018$ggp)
+summary(regdp)
+
+
+#########################
+#       Appendix                      #
+#########################
+
+
+app1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$highestDegreeBeforeUS)
+summary(app1)
+stargazer(app1, type = 'latex', out='hi')
+
 
 #########################
 #       Descriptive Statistics        #
@@ -716,3 +535,161 @@ ggplot() + xlim(0,20)+
   geom_function(fun = function(x) 8.23621+0.28256*x) + #iraq
   geom_function(fun = function(x) 4.6108+0.5734*x) + #iran
   
+  
+#########################
+#       Old or Unused Code            #
+#########################
+
+asr_2018$somali <- ifelse(asr_2018$countryOfBirth == 'somalia',1,0)
+
+#creating GI index variable
+asr_2018$GI <- ifelse(asr_2018$countryOfBirth %in% c("united states", "thailand", "el salvador"), 1, 0)
+asr_2018$GI <- (asr_2018$countryOfBirth %in% c("burma", "nepal", "iran", "bhutan"), 2, 0)
+#
+#' asr_2018$GII[asr_2018$countryOfBirth=="united states"]<-0.204*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="cuba"]<-0.304*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="thailand"]<-0.359*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="el salvador"]<-0.383*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="bhutan"]<-0.421*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="nepal"]<-0.452*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="iran"]<-0.459*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="burma"]<-0.478*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="syria"]<-0.482*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.57*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="iraq"]<-0.577*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="afghanistan"]<-0.655*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="somalia"]<-0.776*10
+#' asr_2018$GII[asr_2018$countryOfBirth=="eritrea"]<-0.517*10
+#' 
+
+#creating iraq spreadsheet for females
+asr_2018_iraq_female <- asr_2018_iraq[asr_2018_iraq$gender=="female",]
+#creating iraq spreadsheet for males
+asr_2018_iraq_male <- asr_2018_iraq[asr_2018_iraq$gender=="male",]
+
+
+#GI by category
+asr_2018$GI[asr_2018$countryOfBirth =='burma']<-2
+asr_2018$GI[asr_2018$countryOfBirth =='nepal']<-2
+asr_2018$GI[asr_2018$countryOfBirth =='iran']<-2
+asr_2018$GI[asr_2018$countryOfBirth =='bhutan']<-2
+
+asr_2018$GI[asr_2018$countryOfBirth =='democratic republic of the congo']<-3
+asr_2018$GI[asr_2018$countryOfBirth =='iraq']<-3
+asr_2018$GI[asr_2018$countryOfBirth =='eritrea']<-3
+asr_2018$GI[asr_2018$countryOfBirth =='afghanistan']<-3
+asr_2018$GI[asr_2018$countryOfBirth =='somalia']<-3
+asr_2018$GI[asr_2018$countryOfBirth =='syria']<-3
+
+asr_2018$englishSkill_dummy <- ifelse(asr_2018$howWellDoTheySpeakNow == 'not at all',0,1)
+asr_2018$englishSkill_dummy[asr_2018$howWellDoTheySpeakNow =='well']<-2
+asr_2018$englishSkill_dummy[asr_2018$howWellDoTheySpeakNow =='very well']<-3
+
+asr_2018$GII[asr_2018$countryOfBirth=="cuba"]<-0.312*10
+asr_2018$GII[asr_2018$countryOfBirth=="thailand"]<-0.377*10
+asr_2018$GII[asr_2018$countryOfBirth=="el salvador"]<-0.397*10
+asr_2018$GII[asr_2018$countryOfBirth=="bhutan"]<-0.436*10
+asr_2018$GII[asr_2018$countryOfBirth=="nepal"]<-0.476*10
+asr_2018$GII[asr_2018$countryOfBirth=="iran"]<-0.492*10
+asr_2018$GII[asr_2018$countryOfBirth=="burma"]<-0.458*10
+asr_2018$GII[asr_2018$countryOfBirth=="syria"]<-0.547*10
+asr_2018$GII[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.579*10
+asr_2018$GII[asr_2018$countryOfBirth=="iraq"]<-0.540*10
+asr_2018$GII[asr_2018$countryOfBirth=="somalia"]<-0.560*10 #sudan
+asr_2018$GII[asr_2018$countryOfBirth=="eritrea"]<-0.508*10 #ethiopia
+
+
+# this puts the years of schooling vs dollars per hour at job for eritrean male and female and graphs them on separate graphs
+par(mfrow=c(1,2))
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_eritrea_male, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Eritrean Male", las=1)
+
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_eritrea_female, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Eritrean Female", las=1, ylim=c(0,20))
+
+ggplot(asr_2018, aes(y=dollarsPerHourAtJob, x=howManyYearsOfSchoolingBeforeUS, color=factor(gender)))+geom_point()+stat_smooth(method="lm", se=FALSE)+ coord_cartesian(ylim=c(0, 60))
+#prints graphs for each GI index
+ggplot(GI_1,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
+ggplot(GI_2,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
+ggplot(GI_3,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS,color=factor(gender)))+geom_point()+stat_smooth(method="lm",se=FALSE)
+
+
+
+# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
+par(mfrow=c(1,2))
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_iraq_male, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Iraqi Male", las=1,ylim=c(0,65))
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_iraq_female, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Iraqi Female", las=1, ylim=c(0,65))
+
+
+# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
+par(mfrow=c(1,2))
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_syria_male, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Syrian Male", las=1)
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_syria_female, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Syrian Female", las=1, ylim=c(0,35))
+
+
+# this puts the years of schooling vs dollars per hour at job for iraqi male and female and graphs them on separate graphs. also accounts for having the same y-axis
+par(mfrow=c(1,2))
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_thailand_male, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Syrian Male", las=1)
+plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_thailand_female, pch=19, ylab="Dollars Per Hour At Job", 
+     xlab="Years Of Schooling Before Entering The US", main="Syrian Female", las=1)
+
+#trying to use gii
+reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GII+asr_2018$gender+asr_2018$econp)
+summary(reg0)
+coef(reg0)
+stargazer(reg0, type = 'latex', out='hi')
+
+
+reghnew <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GII + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(reghnew)
+
+#making same regression w interaction variable
+reg7 <- lm(asr_2018$dollarsPerHourAtJob~asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$howManyYearsOfSchoolingBeforeUS +asr_2018$gender)
+summary(reg7)
+
+reg16 <- lm(asr_2018_female$dollarsPerHourAtJob ~ asr_2018_female$howManyYearsOfSchoolingBeforeUS + asr_2018_female$countryOfBirth)
+summary(reg16)
+
+#gendered schooling
+reg11 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$GI + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(reg11)
+stargazer(reg11, type = 'latex', out = 'my_reg_table.html')
+
+#linear correlation between dollars per hour at job vs years of school for female
+cor(asr_2018_female$dollarsPerHourAtJob,asr_2018_female$howManyYearsOfSchoolingBeforeUS, method="pearson", use = "complete.obs")
+#linear correlation between dollars per hour at job vs years of school for males
+cor(asr_2018_male$dollarsPerHourAtJob, asr_2018_male$howManyYearsOfSchoolingBeforeUS, method="pearson", use = "complete.obs")
+
+
+
+
+somalireg <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$somali + asr_2018$somali + asr_2018$gender)
+summary(somalireg)
+
+somalireg2 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender + asr_2018$somali + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(somalireg2)
+
+somalireg3 <- lm(asr_2018_somalia$dollarsPerHourAtJob ~ asr_2018_somalia$gender+ asr_2018_somalia$howManyYearsOfSchoolingBeforeUS)
+summary(somalireg3)
+
+somalireg4 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$somali + asr_2018$somali + asr_2018$gender + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(somalireg4)
+
+reg1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender*asr_2018$GII + asr_2018$gender + asr_2018$GII + asr_2018$howManyYearsOfSchoolingBeforeUS)
+summary(reg1)
+
+
+#trying to use econp
+reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$econp + asr_2018$gender)
+summary(reg0)
+
+#numppl
+reg0 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$numppl*asr_2018$gender + asr_2018$gender + asr_2018$numppl)
+summary(reg0)
+
+
