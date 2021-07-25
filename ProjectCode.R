@@ -30,17 +30,17 @@ library(tidyverse)
 
 
 ##########################
-#    Loading Data          #
+#        Loading Data          #
 ##########################
 
 dev.off() #this removes current plots
 (rm(list = ls())) #this removes everything in environment(the spreadsheets)
 getwd() # this makes sure you're in the correct working directory
 asr_2018 <- read_excel("asr_2018.xls") #loading in the data
-gii <- read_excel("gii.xls")
+relation <- read_excel("GGPvsHDI.xlsx")
 
 ##########################
-#   Cleaning Data           #
+#      Cleaning Data          #
 ##########################
 
 asr_2018$qn8b<-as.numeric(gsub("don't know","",asr_2018$qn8b))
@@ -94,7 +94,7 @@ asr_2018$GI <- as.numeric(gsub("0", "", asr_2018$GI))
 asr_2018$originalUSRegionWhenResettled <- as.numeric(gsub("refused", "", asr_2018$originalUSRegionWhenResettled))
 
 #########################
-#     Creating Dummy Variables        #
+#       Creating Dummy Variables        #
 #########################
 
 asr_2018$number[asr_2018$qn8b=="bi-weekly"]<-104
@@ -123,32 +123,32 @@ asr_2018$econp[asr_2018$countryOfBirth=="eritrea"]<-0.606*10 #ethiopia
 
 
 #HDI
-asr_2018$hdi[asr_2018$countryOfBirth=="cuba"]<-0.777*10
-asr_2018$hdi[asr_2018$countryOfBirth=="thailand"]<-0.755*10
-asr_2018$hdi[asr_2018$countryOfBirth=="el salvador"]<-0.674*10
-asr_2018$hdi[asr_2018$countryOfBirth=="bhutan"]<-0.612*10
-asr_2018$hdi[asr_2018$countryOfBirth=="nepal"]<-0.574*10
-asr_2018$hdi[asr_2018$countryOfBirth=="iran"]<-0.798*10
-asr_2018$hdi[asr_2018$countryOfBirth=="burma"]<-0.578*10
-asr_2018$hdi[asr_2018$countryOfBirth=="syria"]<-0.536*10
-asr_2018$hdi[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.457*10
-asr_2018$hdi[asr_2018$countryOfBirth=="iraq"]<-0.685*10
-#asr_2018$hdi[asr_2018$countryOfBirth=="somalia"]<-0.520*10 #mauritania
-asr_2018$hdi[asr_2018$countryOfBirth=="eritrea"]<-0.440*10 #this is acc eritrea
+asr_2018$hdi[asr_2018$countryOfBirth=="cuba"]<-7.77 
+asr_2018$hdi[asr_2018$countryOfBirth=="thailand"]<-7.55 
+asr_2018$hdi[asr_2018$countryOfBirth=="el salvador"]<-6.74
+asr_2018$hdi[asr_2018$countryOfBirth=="bhutan"]<-6.12 
+asr_2018$hdi[asr_2018$countryOfBirth=="nepal"]<-5.74 
+asr_2018$hdi[asr_2018$countryOfBirth=="iran"]<-7.98 
+asr_2018$hdi[asr_2018$countryOfBirth=="burma"]<-5.78 
+asr_2018$hdi[asr_2018$countryOfBirth=="syria"]<-5.36 
+asr_2018$hdi[asr_2018$countryOfBirth=="democratic republic of the congo"]<-4.57 
+asr_2018$hdi[asr_2018$countryOfBirth=="iraq"]<-6.85 
+#asr_2018$hdi[asr_2018$countryOfBirth=="somalia"]<-0.520  #mauritania
+asr_2018$hdi[asr_2018$countryOfBirth=="eritrea"]<-4.40  #this is acc eritrea
 
 
 #GGP
-asr_2018$ggp[asr_2018$countryOfBirth=="cuba"]<-0.749*10
-asr_2018$ggp[asr_2018$countryOfBirth=="thailand"]<-0.702*10
-asr_2018$ggp[asr_2018$countryOfBirth=="el salvador"]<-0.690*10
-asr_2018$ggp[asr_2018$countryOfBirth=="bhutan"]<-0.638*10
-asr_2018$ggp[asr_2018$countryOfBirth=="nepal"]<-0.671*10
-asr_2018$ggp[asr_2018$countryOfBirth=="iran"]<-0.589*10
-asr_2018$ggp[asr_2018$countryOfBirth=="burma"]<-0.690*10
-asr_2018$ggp[asr_2018$countryOfBirth=="syria"]<-0.568*10
-asr_2018$ggp[asr_2018$countryOfBirth=="democratic republic of the congo"]<-0.582*10
-asr_2018$ggp[asr_2018$countryOfBirth=="iraq"]<-0.551*10
-asr_2018$ggp[asr_2018$countryOfBirth=="eritrea"]<-0.656*10 #this is ethiopia
+asr_2018$ggp[asr_2018$countryOfBirth=="cuba"]<-7.49 
+asr_2018$ggp[asr_2018$countryOfBirth=="thailand"]<-7.02 
+asr_2018$ggp[asr_2018$countryOfBirth=="el salvador"]<-6.90 
+asr_2018$ggp[asr_2018$countryOfBirth=="bhutan"]<-6.38 
+asr_2018$ggp[asr_2018$countryOfBirth=="nepal"]<-6.71 
+asr_2018$ggp[asr_2018$countryOfBirth=="iran"]<-5.89 
+asr_2018$ggp[asr_2018$countryOfBirth=="burma"]<-6.90 
+asr_2018$ggp[asr_2018$countryOfBirth=="syria"]<-5.68 
+asr_2018$ggp[asr_2018$countryOfBirth=="democratic republic of the congo"]<-5.82 
+asr_2018$ggp[asr_2018$countryOfBirth=="iraq"]<-5.51 
+asr_2018$ggp[asr_2018$countryOfBirth=="eritrea"]<-6.56  #this is ethiopia
 
 #somalia not considered in ^
 
@@ -167,7 +167,7 @@ asr_2018$gdpc[asr_2018$countryOfBirth == "somalia"]<-332
 
 
 #########################
-#    Creating Spreadsheets            #
+#      Creating Spreadsheets            #
 #########################
 
 asr_2018_university <- asr_2018[asr_2018$highestDegreeBeforeUS=="university degree (other than medical)",]
@@ -265,6 +265,15 @@ plot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data=asr_2018_female
      xlab="Years Of Schooling Before Entering The US", main="Female", las=1, ylim=c(0,100))
 
 
+xyplot(hdi ~ ggp, data = asr_2018,
+       type = c("p", "g", "smooth"),
+       xlab = "Global Gender Gap", ylab = "Human Development Index")
+
+
+xyplot(HDI ~ GGP, data = relation,
+       type = c("p", "g", "smooth"),
+       xlab = "Global Gender Gap", ylab = "Human Development Index")
+
 #general graph for years of schooling vs dollars per hour
 xyplot(dollarsPerHourAtJob ~ howManyYearsOfSchoolingBeforeUS, data = asr_2018,
        type = c("p", "g", "smooth"),
@@ -287,7 +296,7 @@ ggplot(asr_2018_male,aes(y=dollarsPerHourAtJob,x=howManyYearsOfSchoolingBeforeUS
 
 
 #########################
-#       Main Regression Table        #
+#     Main Regression Table        #
 #########################
 #gender
 reg1 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$gender)
@@ -367,13 +376,13 @@ summary(both0)
 both1 <- lm (asr_2018$hdi ~ asr_2018$ggp)
 summary(both1)
 
-both2 <- lm(asr_2018$hdi ~ asr_2018$GII)
+both2 <- lm(relation$HDI ~ relation$GGP)
 summary(both2)
 
 both3 <- lm(asr_2018$dollarsPerHourAtJob ~ asr_2018$hdi*asr_2018$gender + asr_2018$gender + asr_2018$hdi + asr_2018$howManyYearsOfSchoolingBeforeUS + asr_2018$ggp)
 summary(both3)
 
-both4 <- lm(asr_2018$ggp ~ asr_2018$hdi)
+both4 <- lm(asr_2018$hdi ~ asr_2018$ggp)
 summary(both4)
 
 #GDP per capita
@@ -383,7 +392,7 @@ summary(regdp)
 
 
 #########################
-#       Appendix                      #
+#       Appendix          #
 #########################
 
 
@@ -393,7 +402,7 @@ stargazer(app1, type = 'latex', out='hi')
 
 
 #########################
-#       Descriptive Statistics        #
+#       Descriptive Statistics    #
 #########################
 
 #finding the average years of school for females
@@ -537,7 +546,7 @@ ggplot() + xlim(0,20)+
   
   
 #########################
-#       Old or Unused Code            #
+#       Old or Unused Code      #
 #########################
 
 asr_2018$somali <- ifelse(asr_2018$countryOfBirth == 'somalia',1,0)
